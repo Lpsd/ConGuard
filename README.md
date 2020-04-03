@@ -11,7 +11,7 @@ ConGuard has a few configurable options (in `settings.json`) and is also based o
 
 &nbsp;
 
-### Getting Started
+## Getting Started
 
 Download the repo and extract it to your server resources folder and start it, like you would with any other resource
 
@@ -59,8 +59,8 @@ The default settings for ConGuard (contained in `settings.json`) look like this:
 
 ```json
 {
-	"max_connection_timeout": 2000,
-	"max_interruptions_per_session": 3,
+	"max_connection_timeout": 5000,
+	"max_interruptions_per_session": 5,
 	"disable_collisions": false,
 	"restore_position": true
 }
