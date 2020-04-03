@@ -100,6 +100,10 @@ function ConGuard:onPlayerNetworkStatus(status, ticks)
 		return
 	end
 	
+	if(not self.state) then
+		return false
+	end
+	
 	iprintd(player, "network connection lost")
 	
 	local vehicle = getPedOccupiedVehicle(player)
