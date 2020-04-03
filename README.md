@@ -61,7 +61,7 @@ The default settings for ConGuard (contained in `settings.json`) look like this:
 {
 	"max_connection_timeout": 2000,
 	"max_interruptions_per_session": 3,
-	"disable_collisions": true,
+	"disable_collisions": false,
 	"restore_position": true
 }
 ```
