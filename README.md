@@ -70,6 +70,18 @@ The default settings for ConGuard (contained in `settings.json`) look like this:
 
 You can either edit `settings.json` to apply global settings for each instance that is created, or alternatively pass a table to `createConnectionGuard` with the settings you would like to change (per-dimension settings).
 
+If you want to change the settings for a ConGuard instance that's already created, you can use:
+
+```lua
+exports.conguard:setConnectionGuardSetting(int dimension, string setting, mixed value)
+```
+
+or to get a settings current value:
+
+```lua
+exports.conguard:getConnectionGuardSetting(int dimension, string setting)
+```
+
 &nbsp;
 
 Oh... and you can also change the "lost connection" image that floats above the player. This function is clientside only:
