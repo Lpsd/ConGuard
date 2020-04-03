@@ -1,6 +1,6 @@
 {
-	"max_connection_timeout": 2000,
-	"max_interruptions_per_session": 3,
+	"max_connection_timeout": 5000,
+	"max_interruptions_per_session": 5,
 	"disable_collisions": true,
 	"restore_position": true
 }
