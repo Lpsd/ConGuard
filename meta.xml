@@ -1,0 +1,28 @@
+<meta>
+	<info type="script" name="Connection Guard" version="0.1" author="LopSided" />
+	
+	<script src="classlib.lua" type="shared" />
+	
+	<script src="shared/utils.lua" type="shared" />
+
+	<script src="server/classes/conguard.lua" type="server" />
+	<script src="server/init.lua" type="server" />
+	<script src="server/functions.lua" type="server" />
+	
+	<script src="client/utils.lua" type="client" />
+	<script src="client/controller.lua" type="client" />
+	
+	<file src="assets/images/nosignal.png" />
+	
+	<file src="settings.json" />
+	
+	<export function="createConnectionGuard" type="server" />
+	<export function="destroyConnectionGuard" type="server" />
+	<export function="setConnectionGuardEnabled" type="server" />
+	<export function="setConnectionGuardSetting" type="server" />
+	<export function="getConnectionGuardSetting" type="server" />
+	
+	<export function="setCustomConnectionImage" type="client" />
+	
+	<min_mta_version server="1.3.0-9.04570" />
+</meta>
