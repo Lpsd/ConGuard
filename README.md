@@ -18,7 +18,7 @@ Download the repo and extract it to your server resources folder and start it, l
 For this example we'll assume your resource folder is called `conguard`. To create a ConGuard instance, use the following:
 
 ```lua
-exports.conguard:createConnectionGuard(int dimension, table settings)
+exports.conguard:createConnectionGuard(int dimension, [table settings])
 ```
 
 You can turn a ConGuard instance on or off:
