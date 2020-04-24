@@ -93,6 +93,10 @@ function ConGuard:onPlayerNetworkStatus(status, ticks)
 		
 		if(self.interruptionHistory[player] == self:getSetting("max_interruptions_per_session")) then
 			triggerEvent("onPlayerNetworkInterruptionLimitReached", player)
+			
+			if(self:getSetting("kick_on_max_interruptions")) then
+				kickPlayer(player, self:getSetting("kick_message"))
+			end
 		end		
 		
 		triggerClientEvent(broadcastTo, "onClientPlayerConnectionStatus", player, status, nil, self.settings)
