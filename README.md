@@ -60,7 +60,7 @@ The default settings for ConGuard (contained in `settings.json`) look like this:
 ```json
 {
 	"max_connection_timeout": 5000,
-	"max_interruptions_per_session": 1,
+	"max_interruptions_per_session": 5,
 	"disable_collisions": false,
 	"restore_position": true,
 	"kick_on_max_interruptions": false,
