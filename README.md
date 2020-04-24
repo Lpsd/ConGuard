@@ -49,7 +49,7 @@ The following event will be fired when `max_interruptions_per_session` is reache
 ```
 onPlayerNetworkInterruptionLimitReached
 ```
-**source**: the player who reached the connection timeout
+**source**: the player who reached the maximum amount of network interruptions allowed per session
 
 &nbsp;
 
