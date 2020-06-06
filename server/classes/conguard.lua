@@ -14,6 +14,11 @@ end
 -- *********************************************
 
 function ConGuard:constructor(dimension, settings)
+	if(ConGuardInstances[dimension]) then
+		iprintd("[ConGuard] Instance already exists in dimension " .. dimension, "createConnectionGuard()")
+		return ConGuardInstances[dimension]
+	end
+	
 	self.state = true
 	self.dimension = dimension
 	
@@ -34,6 +39,8 @@ function ConGuard:constructor(dimension, settings)
 	ConGuardInstances[self.dimension] = self
 
 	iprintd("[ConGuard] Created instance in dimension " .. dimension)
+	
+	return self
 end
 
 -- *********************************************
