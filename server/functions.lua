@@ -21,6 +21,11 @@ function createConnectionGuard(dimension, settings)
 		return false
 	end
 	
+	if(ConGuardInstances[dimension]) then
+		iprintd("[ConGuard] Instance already exists in dimension " .. dimension, "createConnectionGuard()")
+		return false
+	end
+	
 	ConGuard:new(dimension, settings)
 	
 	return true

@@ -2,6 +2,7 @@ DEBUG = true
 
 function iprintd(...)
 	if(DEBUG) then
-		iprint(...)
+		return iprint(...)
 	end
+	return false
 end
