@@ -25,7 +25,7 @@ function createConnectionGuard(dimension, settings)
 		return iprintd("[ConGuard] Can't create a per-dimension instance when a global instance already exists")
 	end
 	
-	if(dimension == -1 and not ConGuardInstances[-1] and #ConGuardInstances ~= 0) then
+	if(dimension == -1 and not ConGuardInstances[-1] and #ConGuardInstances > 0) then
 		return iprintd("[ConGuard] Can't create a global instance when per-dimension instances already exist.")
 	end
 	
