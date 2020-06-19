@@ -74,10 +74,10 @@ end
 -- *********************************************
 
 function ConGuard:onPlayerNetworkStatus(status, ticks)
-	local player = source
+	local sourcePlayer = source
 	
 	local broadcastTo = {}
-	local dimension = self:getSetting("global") and player or self.dimension
+	local dimension = self:getSetting("global") and getElementDimension(sourcePlayer) or self.dimension
 	
 	for i, player in ipairs(getElementsByType("player")) do
 		if(getElementDimension(player) == dimension) then
@@ -86,30 +86,30 @@ function ConGuard:onPlayerNetworkStatus(status, ticks)
 	end
 	
 	if(status == 1) then
-		if(not self.interruptedPlayers[player]) then
+		if(not self.interruptedPlayers[sourcePlayer]) then
 			return false
 		end
 		
 		-- Interruption is ending
-		iprintd(player, "network connection restored")
+		iprintd(sourcePlayer, "network connection restored")
 		
-		if(isTimer(self.timeoutListeners[player])) then
-			killTimer(self.timeoutListeners[player])
+		if(isTimer(self.timeoutListeners[sourcePlayer])) then
+			killTimer(self.timeoutListeners[sourcePlayer])
 		end
 		
-		self.timeoutListeners[player] = nil
+		self.timeoutListeners[sourcePlayer] = nil
 		
-		self.interruptionHistory[player] = self.interruptionHistory[player] and (self.interruptionHistory[player] + 1) or 1
+		self.interruptionHistory[sourcePlayer] = self.interruptionHistory[sourcePlayer] and (self.interruptionHistory[sourcePlayer] + 1) or 1
 		
-		if(self.interruptionHistory[player] == self:getSetting("max_interruptions_per_session")) then
-			triggerEvent("onPlayerNetworkInterruptionLimitReached", player)
+		if(self.interruptionHistory[sourcePlayer] == self:getSetting("max_interruptions_per_session")) then
+			triggerEvent("onPlayerNetworkInterruptionLimitReached", sourcePlayer)
 			
 			if(self:getSetting("kick_on_max_interruptions")) then
-				kickPlayer(player, self:getSetting("kick_message"))
+				kickPlayer(sourcePlayer, self:getSetting("kick_message"))
 			end
 		end		
 		
-		triggerClientEvent(broadcastTo, "onClientPlayerConnectionStatus", player, status, nil, self.settings)
+		triggerClientEvent(broadcastTo, "onClientPlayerConnectionStatus", sourcePlayer, status, nil, self.settings)
 		
 		return
 	end
@@ -118,12 +118,12 @@ function ConGuard:onPlayerNetworkStatus(status, ticks)
 		return false
 	end
 	
-	iprintd(player, "network connection lost")
+	iprintd(sourcePlayer, "network connection lost")
 	
-	local vehicle = getPedOccupiedVehicle(player)
-	local x, y, z = getElementPosition(vehicle and vehicle or player)
+	local vehicle = getPedOccupiedVehicle(sourcePlayer)
+	local x, y, z = getElementPosition(vehicle and vehicle or sourcePlayer)
 	
-	self.interruptedPlayers[player] = {
+	self.interruptedPlayers[sourcePlayer] = {
 		vehicle = vehicle,
 		originPosition = {
 			x = x,
@@ -132,9 +132,9 @@ function ConGuard:onPlayerNetworkStatus(status, ticks)
 		}
 	}
 	
-	self.timeoutListeners[player] = setTimer(triggerEvent, self:getSetting("max_connection_timeout"), 1, "onPlayerNetworkTimeout", player)
+	self.timeoutListeners[sourcePlayer] = setTimer(triggerEvent, self:getSetting("max_connection_timeout"), 1, "onPlayerNetworkTimeout", sourcePlayer)
 	
-	triggerClientEvent(broadcastTo, "onClientPlayerConnectionStatus", player, status, self.interruptedPlayers[player], self.settings)
+	triggerClientEvent(broadcastTo, "onClientPlayerConnectionStatus", sourcePlayer, status, self.interruptedPlayers[sourcePlayer], self.settings)
 end
 
 -- *********************************************
