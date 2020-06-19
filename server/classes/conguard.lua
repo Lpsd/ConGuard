@@ -5,6 +5,7 @@ function ConGuard:new(...)
 end
 
 function ConGuard:delete(...)
+	self:unbindEvents()
 	ConGuardInstances[self.dimension] = nil
 	delete(self, ...)
 	
