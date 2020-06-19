@@ -54,7 +54,8 @@ end
 
 function ConGuard:setSetting(setting, value)
 	if(not self.settings[setting]) then
-		return false
+		self.settings[setting] = value
+		return true
 	end
 	
 	if(type(value) ~= type(self.settings[setting])) then
@@ -76,9 +77,10 @@ function ConGuard:onPlayerNetworkStatus(status, ticks)
 	local player = source
 	
 	local broadcastTo = {}
+	local dimension = self:getSetting("global") and player or self.dimension
 	
 	for i, player in ipairs(getElementsByType("player")) do
-		if(getElementDimension(player) == self.dimension) then
+		if(getElementDimension(player) == dimension) then
 			broadcastTo[#broadcastTo+1] = player
 		end
 	end
