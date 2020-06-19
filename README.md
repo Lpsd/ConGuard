@@ -33,6 +33,8 @@ You can also destroy a ConGuard instance entirely by doing:
 exports.conguard:destroyConnectionGuard(int dimension)
 ```
 
+**Note**: If you want to create a global instance (running in all dimensions) then pass `-1` as the dimension.
+
 &nbsp;
 
 ### Events
