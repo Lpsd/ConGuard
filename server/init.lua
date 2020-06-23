@@ -24,6 +24,8 @@ function importDefaultSettings()
 		else
 			return error("[ConGuard] Unable to read \"settings.json\" - broken JSON")
 		end
+		
+		fileClose(settingsFile)
 	else
 		return error("[ConGuard] Unable to open \"settings.json\" - does the file exist?")
 	end
