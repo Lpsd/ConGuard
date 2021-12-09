@@ -85,6 +85,8 @@ The default settings for ConGuard (contained in `settings.json`) look like this:
 
 **Important**: Using `disable_collisions` could potentially create a separate exploit, where players using the lagswitch would use this to be collisionless right before being hit. You probably don't want to use this in a DD setting
 
+**Also note:** the size/height/distance settings in `lost_connection_image` are in game world units
+
 &nbsp;
 
 The settings defined in `settings.json` will be used as the default settings for each ConGuard instance. You can also optionally pass a table of specific settings to overwrite when creating an instance (via `createConnectionGuard`).
