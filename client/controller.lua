@@ -1,104 +1,122 @@
-ConGuard = {
-	connectionImagePath = "assets/images/nosignal.png",
-	connectionImageTexture = false,
-	streamedInPlayers = {},
-	interruptedNetworkPlayers = {}
-}
+local streamedInPlayers = {}
+local interruptedNetworkPlayers = {}
 
-function setPlayerConnectionStatus(state, info, settings)
-	if(type(state) ~= "boolean") then
+local connectionImageTexture = false
+
+function getActiveConGuardInstance()
+    local instance = ConGuardInstances[getElementDimension(localPlayer)]
+
+    if (not instance) then
+        instance = ConGuardInstances[-1]
+
+        if (not instance)  then
+            return false
+        end
+    end
+
+    return instance
+end
+
+function setPlayerConnectionStatus(player, state, info)
+    local instance = getActiveConGuardInstance()
+
+    if (not instance) then
+        return false
+    end
+
+	if (type(state) ~= "boolean") then
 		state = (state == 0) and true or false
 	end
 	
 	local localVehicle = getPedOccupiedVehicle(localPlayer)
 	
-	if(state) then
-		if(settings["disable_collisions"]) then
-			if(localVehicle) then
-				setElementCollidableWith(localVehicle, info.vehicle and info.vehicle or source, false)
+	if (state) then
+		if (instance.settings["disable_collisions"]) then
+			if (localVehicle) then
+				setElementCollidableWith(localVehicle, info.vehicle and info.vehicle or player, false)
 			end
-			setElementCollidableWith(localPlayer, info.vehicle and info.vehicle or source, false)
+
+			setElementCollidableWith(localPlayer, info.vehicle and info.vehicle or player, false)
 			
-			if(info.vehicle) then
+			if (info.vehicle) then
 				setElementAlpha(info.vehicle, 100)
 			end
 			
-			setElementAlpha(source, 100)
+			setElementAlpha(player, 100)
 		end	
 	
-		setElementFrozen(info.vehicle and info.vehicle or source, true)
+		setElementFrozen(info.vehicle and info.vehicle or player, true)
 	else
-		info = ConGuard.interruptedNetworkPlayers[source]
+		info = interruptedNetworkPlayers[player]
 		
-		if(info) then
-			if(settings["restore_position"]) then
-				setElementPosition(info.vehicle and info.vehicle or source, info.originPosition.x, info.originPosition.y, info.originPosition.z)
+		if (info) then
+			if (instance.settings["restore_position"]) then
+				setElementPosition(info.vehicle and info.vehicle or player, info.originPosition.x, info.originPosition.y, info.originPosition.z)
 			end
 			
-			setElementFrozen(info.vehicle and info.vehicle or source, false)
+			setElementFrozen(info.vehicle and info.vehicle or player, false)
 			
-			setElementCollidableWith(localVehicle, info.vehicle and info.vehicle or source, true)
-			setElementCollidableWith(localPlayer, info.vehicle and info.vehicle or source, true)
+            if (isElement(localVehicle)) then
+			    setElementCollidableWith(localVehicle, info.vehicle and info.vehicle or player, true)
+            end
+
+			setElementCollidableWith(localPlayer, info.vehicle and info.vehicle or player, true)
 			
-			if(info.vehicle) then
+			if (info.vehicle) then
 				setElementAlpha(info.vehicle, 255)
 			end
 			
-			setElementAlpha(source, 255)
+			setElementAlpha(player, 255)
 		end
 	end
 
-	ConGuard.interruptedNetworkPlayers[source] = state and info or nil
-	
-	iprintd(source, state)
+	interruptedNetworkPlayers[player] = state and info or nil	
 end
-addEvent("onClientPlayerConnectionStatus", true)
-addEventHandler("onClientPlayerConnectionStatus", root, setPlayerConnectionStatus)
 
 -- *********************************************
 
 function renderLostConnectionImages()
-	if(not ConGuard.connectionImageTexture) then
-		ConGuard.connectionImageTexture = dxCreateTexture(ConGuard.connectionImagePath)
+    local instance = getActiveConGuardInstance()
+
+    if (not instance) then
+        return false
+    end
+
+    local image = instance:getSetting("lost_connection_image")
+
+    if (not image) then
+        return false
+    end
+
+	if (not connectionImageTexture) then
+		connectionImageTexture = dxCreateTexture(image.path)
 	end
 	
-	for player, state in pairs(ConGuard.interruptedNetworkPlayers) do
-		if(getElementDimension(localPlayer) == getElementDimension(player)) then
-			if(ConGuard.streamedInPlayers[player]) then
-				dxDrawImageOnElement(player, ConGuard.connectionImageTexture)
+	for player, state in pairs(interruptedNetworkPlayers) do
+		if (getElementDimension(localPlayer) == getElementDimension(player)) then
+			if (streamedInPlayers[player]) then
+				dxDrawImageOnElement(player, connectionImageTexture, image.max_distance, image.height, image.size)
 			end
 		end
 	end
-end
-addEventHandler("onClientPreRender", root, renderLostConnectionImages)
-
--- *********************************************
-
-function setCustomConnectionImage(path)
-	ConGuard.connectionImagePath = path
 end
 
 -- *********************************************
 
 function registerStreamedInPlayer(player)
-	ConGuard.streamedInPlayers[player and player or source] = true
+	streamedInPlayers[player and player or source] = true
 end
-addEventHandler("onClientElementStreamIn", root, registerStreamedInPlayer)
 
 function unregisterStreamedInPlayer(player)
-	ConGuard.streamedInPlayers[player and player or source] = nil
+	streamedInPlayers[player and player or source] = nil
 end
-addEventHandler("onClientElementStreamOut", root, unregisterStreamedInPlayer)
 
 -- *********************************************
-	
+
 function initializeStreamedInPlayers()
 	for i, player in ipairs(getElementsByType("player")) do
-		if(isElementStreamedIn(player)) then
-			ConGuard.streamedInPlayers[player] = true
+		if (isElementStreamedIn(player)) then
+			streamedInPlayers[player] = true
 		end
 	end
 end
-addEventHandler("onClientResourceStart", resourceRoot, initializeStreamedInPlayers)
-
--- *********************************************

@@ -1,28 +1,44 @@
 <meta>
-	<info type="script" name="Connection Guard" version="0.1" author="LopSided" />
+	<info type="script" name="Connection Guard" version="1.0" author="LopSided" />
 	
-	<script src="classlib.lua" type="shared" />
-	
+    <!-- SHARED -->
+	<script src="shared/classlib.lua" type="shared" />
 	<script src="shared/utils.lua" type="shared" />
 
-	<script src="server/classes/conguard.lua" type="server" />
-	<script src="server/init.lua" type="server" />
-	<script src="server/functions.lua" type="server" />
-	
+        <!-- classes -->
+        <script src="shared/classes/Class.lua" type="shared" />
+
+
+    <!-- SERVER -->
+	<script src="server/exports.lua" type="server" />
+    <script src="server/main.lua" type="server" />
+
+        <!-- classes -->
+        <script src="server/classes/conguard.lua" type="server" />
+
+
+	<!-- CLIENT -->
 	<script src="client/utils.lua" type="client" />
+	<script src="client/main.lua" type="client" />
 	<script src="client/controller.lua" type="client" />
-	
+
+        <!-- classes -->
+        <script src="client/classes/conguard.lua" type="client" />
+
+
+    <!-- do not move this above other script includes -->
+    <script src="shared/init.lua" type="shared" />
+
+    <!-- FILES -->
 	<file src="assets/images/nosignal.png" />
-	
 	<file src="settings.json" />
 	
+    <!-- SERVER EXPORTS -->
 	<export function="createConnectionGuard" type="server" />
 	<export function="destroyConnectionGuard" type="server" />
 	<export function="setConnectionGuardEnabled" type="server" />
 	<export function="setConnectionGuardSetting" type="server" />
 	<export function="getConnectionGuardSetting" type="server" />
 	
-	<export function="setCustomConnectionImage" type="client" />
-	
-	<min_mta_version server="1.3.0-9.04570" />
+	<min_mta_version server="1.5.8-9.20957" />
 </meta>

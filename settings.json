@@ -4,5 +4,11 @@
 	"disable_collisions": false,
 	"restore_position": true,
 	"kick_on_max_interruptions": false,
-	"kick_message": "Please fix your connection, or disable your lagswitch!"
+	"kick_message": "Please fix your connection, or disable your lagswitch!",
+    "lost_connection_image": {
+        "path": "assets/images/nosignal.png",
+        "size": 0.5,
+        "height": 1,
+        "max_distance": 20
+    }
 }
