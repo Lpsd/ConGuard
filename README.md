@@ -85,6 +85,8 @@ The default settings for ConGuard (contained in `settings.json`) look like this:
 
 **Important**: Using `disable_collisions` could potentially create a separate exploit, where players using the lagswitch would use this to be collisionless right before being hit. You probably don't want to use this in a DD setting
 
+&nbsp;
+
 The settings defined in `settings.json` will be used as the default settings for each ConGuard instance. You can also optionally pass a table of specific settings to overwrite when creating an instance (via `createConnectionGuard`).
 
 If you want to change the settings for a ConGuard instance:
@@ -106,10 +108,10 @@ Settings are synced with all clients (ConGuard instances exist on the client to 
 For example, if you want to set the "lost connection" image for a specific instance, after it has been created:
 
 ```lua
-local imageSettings = getConnectionGuardSetting(1, "lost_connection_image")
+local imageSettings = exports.conguard:getConnectionGuardSetting(1, "lost_connection_image")
 imageSettings.path = ":myResource/images/connection.png"
 
-setConnectionGuardSetting(1, "lost_connection_image", imageSettings)
+exports.conguard:setConnectionGuardSetting(1, "lost_connection_image", imageSettings)
 ```
 
 Make sure to use a proper external resource path (i.e: `:myResource/images/connection.png`)
