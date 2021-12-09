@@ -13,7 +13,9 @@ ConGuard has a few configurable options (in `settings.json`) and is also based o
 
 ## Getting Started
 
-Download the repo and extract it to your server resources folder and start it, like you would with any other resource
+Download the repo and extract it to your server resources folder and start it, like you would with any other resource.
+
+&nbsp;
 
 For this example we'll assume your resource folder is called `conguard`. To create a ConGuard instance, use the following:
 
@@ -21,11 +23,15 @@ For this example we'll assume your resource folder is called `conguard`. To crea
 exports.conguard:createConnectionGuard(int dimension [, table settings])
 ```
 
-You can turn a ConGuard instance on or off:
+&nbsp;
+
+You can turn a ConGuard instance on or off, temporarily:
 
 ```lua
 exports.conguard:setConnectionGuardEnabled(int dimension, bool state)
 ```
+
+&nbsp;
 
 You can also destroy a ConGuard instance entirely by doing:
 
@@ -33,7 +39,8 @@ You can also destroy a ConGuard instance entirely by doing:
 exports.conguard:destroyConnectionGuard(int dimension)
 ```
 
-**Note**: If you want to create a global instance (running in all dimensions) then pass `-1` as the dimension.
+**Note**: If you want to create a global instance (running in all dimensions) then pass `-1` as the dimension. 
+If an instance already exists in a specific dimension, it will take precedence over the global instance.
 
 &nbsp;
 
@@ -66,15 +73,21 @@ The default settings for ConGuard (contained in `settings.json`) look like this:
 	"disable_collisions": false,
 	"restore_position": true,
 	"kick_on_max_interruptions": false,
-	"kick_message": "Please fix your connection, or disable your lagswitch!"
+	"kick_message": "Please fix your connection, or disable your lagswitch!",
+	"lost_connection_image": {
+		"path": "assets/images/nosignal.png",
+		"size": 0.5,
+		"height": 1,
+		"max_distance": 20
+	}
 }
 ```
 
 **Important**: Using `disable_collisions` could potentially create a separate exploit, where players using the lagswitch would use this to be collisionless right before being hit. You probably don't want to use this in a DD setting
 
-You can either edit `settings.json` to apply global settings for each instance that is created, or alternatively pass a table to `createConnectionGuard` with the settings you would like to change (per-dimension settings).
+The settings defined in `settings.json` will be used as the default settings for each ConGuard instance. You can also optionally pass a table of specific settings to overwrite when creating an instance (via `createConnectionGuard`).
 
-If you want to change the settings for a ConGuard instance that's already created, you can use:
+If you want to change the settings for a ConGuard instance:
 
 ```lua
 exports.conguard:setConnectionGuardSetting(int dimension, string setting, mixed value)
@@ -86,12 +99,17 @@ or to get a settings current value:
 exports.conguard:getConnectionGuardSetting(int dimension, string setting)
 ```
 
+Settings are synced with all clients (ConGuard instances exist on the client to sync basic data like settings).
+
 &nbsp;
 
-Oh... and you can also change the "lost connection" image that floats above the player. This function is clientside only:
+For example, if you want to set the "lost connection" image for a specific instance, after it has been created:
 
 ```lua
-setCustomConnectionImage(string imagePath)
+local imageSettings = getConnectionGuardSetting(1, "lost_connection_image")
+imageSettings.path = ":myResource/images/connection.png"
+
+setConnectionGuardSetting(1, "lost_connection_image", imageSettings)
 ```
 
-Make sure you use a proper external resource path (i.e: `:myResource/images/connection.png`)
+Make sure to use a proper external resource path (i.e: `:myResource/images/connection.png`)
