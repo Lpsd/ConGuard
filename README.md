@@ -14,21 +14,23 @@ An event is fired when a player reaches this, regardless of whether `kick_on_max
 
 See more about events and settings below.
 
-**Note**: all the functions and events listed below are serverside unless otherwise stated.
-
 &nbsp;
 
 ## Getting Started
 
-Download the repo and extract it to your server resources folder and start it, like you would with any other resource.
+If you're experienced, you can integrate this resource directly into your own, however for basic usage it's best to keep things separate and use exports as explained below.
 
-&nbsp;
+Download the repo and extract the contents to a folder in your server's resources, like you would with any other resource.
 
-For this example we'll assume your resource folder is called `conguard`. To create a ConGuard instance, use the following:
+For this example we'll assume you named the resource `conguard`. To create a ConGuard instance, use the following export in **your own resource**:
+
+### Note: all functions/exports and events listed here are serverside only, unless otherwise stated
 
 ```lua
 exports.conguard:createConnectionGuard(int dimension [, table settings])
 ```
+
+**Note**: If you want to create a global instance (running in all dimensions) then pass `-1` as the dimension. If an instance already exists in a specific dimension, it will take precedence over the global instance.
 
 &nbsp;
 
@@ -45,9 +47,6 @@ You can also destroy a ConGuard instance entirely by doing:
 ```lua
 exports.conguard:destroyConnectionGuard(int dimension)
 ```
-
-**Note**: If you want to create a global instance (running in all dimensions) then pass `-1` as the dimension. 
-If an instance already exists in a specific dimension, it will take precedence over the global instance.
 
 &nbsp;
 
