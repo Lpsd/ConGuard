@@ -1,16 +1,20 @@
 DEBUG = true
 ConGuardInstances = {}
 
-function init()	
+function init()
     if (SERVER) then
         addEvent("onPlayerNetworkTimeout", true)
         addEvent("onPlayerNetworkInterruptionLimitReached", true)
 
-        addEventHandler("onPlayerResourceStart", root, function(resource)
-            if (getResourceRootElement(resource) == resourceRoot) then
-                addPlayer(source)
+        addEventHandler(
+            "onPlayerResourceStart",
+            root,
+            function(resource)
+                if (getResourceRootElement(resource) == resourceRoot) then
+                    addPlayer(source)
+                end
             end
-        end)
+        )
         addEventHandler("onPlayerLeave", root, removePlayer)
 
         local import = importDefaultSettings()
@@ -19,7 +23,7 @@ function init()
             iprintd("[ConGuard] Failed to launch", import)
             return cancelEvent()
         end
-        
+
         iprintd("[ConGuard] Launched successfully...")
     end
 

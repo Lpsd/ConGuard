@@ -14,11 +14,7 @@ local function create(dimension, settings)
     return instance
 end
 
-function onSyncAll(items)
-    for i, item in ipairs(items) do
-        create(item.dimension, item.settings)
-    end
-end
+-- *********************************************
 
 function onCreated(dimension, settings)
     create(dimension, settings)
@@ -33,10 +29,18 @@ function onDestroyed(dimension)
     ConGuardInstances[dimension] = nil
 end
 
+-- *********************************************
+
 function onSettingChange(dimension, setting, value)
     if (not ConGuardInstances[dimension]) or (not instanceof(ConGuardInstances[dimension], Class, true)) then
         return false
     end
 
     ConGuardInstances[dimension]:setSetting(setting, value)
+end
+
+function onSyncAll(items)
+    for i, item in ipairs(items) do
+        create(item.dimension, item.settings)
+    end
 end
