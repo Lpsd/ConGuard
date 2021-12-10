@@ -3,9 +3,16 @@ Network/connection helper for MTA:SA
 
 This resource provides measures to deal with lagswitch / connection abuse in MTA (commonly seen in Destruction Derby servers, although you can use this resource in any environment/mode you wish).
 
-When a player loses connection to the server, the player (and their vehicle, if it exists) will be frozen for all remote players and a "lost connection" icon will be placed above the player. Upon re-connection, the player will be unfrozen and (by default) set back to their original position before they lost connection, to avoid the teleporting exploit.
+ConGuard is based on dimensions, which is useful for multi-gamemode servers who don't want to use this in every room/dimension.
 
-ConGuard has a few configurable options (in `settings.json`) and is also based on dimensions, which is useful for multi-gamemode servers who don't want to activate this in every room.
+When a player loses connection to the server, the player (and their vehicle, if exists) will be frozen for all remote players and a "lost connection" icon will be placed above the player. Upon re-connection, the player will be unfrozen and (by default) set back to their original position before they lost connection, to avoid the teleporting exploit.
+
+Upon losing connection, an event will be fired - allowing you to do whatever you want to the player. 
+
+Optionally, using `kick_on_max_interruptions`, they can also kicked with a custom message once they lose connection X amount of times (`max_interruptions_per_session`).
+An event is fired when a player reaches `max_interruptions_per_session`, regardless of whether `kick_on_max_interruptions` is enabled, allowing you to do anything you want here too.
+
+See more about events and settings below.
 
 **Note**: all the functions and events listed below are serverside unless otherwise stated.
 
@@ -46,7 +53,7 @@ If an instance already exists in a specific dimension, it will take precedence o
 
 ### Events
 
-The following event will be fired when `max_connection_timeout` is reached:
+The following event will be fired when a player has lost connection longer than `max_connection_timeout` (milliseconds). You might want to kill the player here, or in a multi-gamemode kick him from the room.
 ```
 onPlayerNetworkTimeout
 ```
@@ -54,7 +61,7 @@ onPlayerNetworkTimeout
 
 &nbsp;
 
-The following event will be fired when `max_interruptions_per_session` is reached:
+The following event will be fired when `max_interruptions_per_session` is reached. If you only need to kick the player, ignore this event and set `kick_on_max_interruptions` to **true**.
 ```
 onPlayerNetworkInterruptionLimitReached
 ```
@@ -102,8 +109,6 @@ or to get a settings current value:
 ```lua
 exports.conguard:getConnectionGuardSetting(int dimension, string setting)
 ```
-
-Settings are synced with all clients (ConGuard instances exist on the client to sync basic data like settings).
 
 &nbsp;
 
