@@ -10,7 +10,7 @@ When a player loses connection to the server, the player (and their vehicle, if 
 Upon losing connection, an event will be fired - allowing you to do whatever you want to the player. 
 
 Optionally, using `kick_on_max_interruptions`, they can also kicked with a custom message once they lose connection X amount of times (`max_interruptions_per_session`).
-An event is fired when a player reaches `max_interruptions_per_session`, regardless of whether `kick_on_max_interruptions` is enabled, allowing you to do anything you want here too.
+An event is fired when a player reaches this, regardless of whether `kick_on_max_interruptions` is enabled, allowing you to do anything you want here too.
 
 See more about events and settings below.
 
