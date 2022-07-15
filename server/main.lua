@@ -52,17 +52,23 @@ end
 -- *********************************************
 
 function isPlayerReady(player)
-    for i, p in ipairs(READY_PLAYERS) do
-        if (p == player) then
-            return true
-        end
-    end
+    return READY_PLAYERS[player] and true or false
+end
 
-    return false
+function getReadyPlayers()
+    local players = {}
+    for player in pairs(READY_PLAYERS) do
+        players[#players+1] = player
+    end
+    return players
 end
 
 function addPlayer(player)
-    table.insert(READY_PLAYERS, player)
+    if (READY_PLAYERS[player]) then
+        return
+    end
+
+    READY_PLAYERS[player] = true
     syncAll(player)
 end
 
@@ -74,11 +80,5 @@ function removePlayer()
     end
 
     instance:onPlayerNetworkStatus(1)
-
-    for i, player in ipairs(READY_PLAYERS) do
-        if (player == source) then
-            table.remove(READY_PLAYERS, i)
-            break
-        end
-    end
+    READY_PLAYERS[source] = nil
 end

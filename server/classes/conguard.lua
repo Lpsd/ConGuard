@@ -30,7 +30,7 @@ function ConGuard:constructor(dimension, settings)
     ConGuardInstances[dimension] = self
     iprintd("[ConGuard] Created instance in dimension " .. dimension)
 
-    triggerClientEvent(READY_PLAYERS, "onConGuardCreated", resourceRoot, dimension, self.settings)
+    triggerClientEvent(getReadyPlayers(), "onConGuardCreated", resourceRoot, dimension, self.settings)
 
     for i, player in ipairs(getElementsByType("player")) do
         if (not isPlayerReady(player)) then
@@ -47,7 +47,7 @@ function ConGuard:destructor()
     ConGuardInstances[self.dimension] = nil
     iprintd("[ConGuard] Destroyed instance in dimension " .. self.dimension)
 
-    triggerClientEvent(READY_PLAYERS, "onConGuardDestroyed", resourceRoot, self.dimension)
+    triggerClientEvent(getReadyPlayers(), "onConGuardDestroyed", resourceRoot, self.dimension)
 end
 
 -- *********************************************
@@ -88,7 +88,7 @@ end
 function ConGuard:setSetting(setting, value)
     self.settings[setting] = value
 
-    triggerClientEvent(READY_PLAYERS, "onConGuardSettingChange", resourceRoot, self.dimension, setting, value)
+    triggerClientEvent(getReadyPlayers(), "onConGuardSettingChange", resourceRoot, self.dimension, setting, value)
 
     return true
 end
