@@ -101,10 +101,14 @@ function renderLostConnectionImages()
     end
 
     for player, state in pairs(interruptedNetworkPlayers) do
-        if (getElementDimension(localPlayer) == getElementDimension(player)) then
-            if (streamedInPlayers[player]) then
-                dxDrawImageOnElement(player, connectionImageTexture, image.max_distance, image.height, image.size)
+        if (isElement(player)) then
+            if (getElementDimension(localPlayer) == getElementDimension(player)) then
+                if (streamedInPlayers[player]) then
+                    dxDrawImageOnElement(player, connectionImageTexture, image.max_distance, image.height, image.size)
+                end
             end
+        else
+            interruptedNetworkPlayers[player] = nil
         end
     end
 end
